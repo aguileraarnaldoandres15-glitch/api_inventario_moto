@@ -1,24 +1,33 @@
+// Cargar variables de entorno 
+require('dotenv').config(); 
+
 const express = require('express');
+const cors = require('cors'); 
 const conectarBD = require('./config/db');
 const productoRoutes = require('./routes/productoRoutes');
 
 const app = express();
 const puerto = 3000;
 
-// Conectar a la Base de Datos
+// Conectar a MongoDB Atlas
 conectarBD();
 
-// Middleware
+// Middlewares
+app.use(cors()); // Permite que el frontend consulte esta API
 app.use(express.json());
 
-// Redirección de rutas principales
-app.use('/productos', productoRoutes);
+// Redirección de rutas principales 
+app.use('/api/productos', productoRoutes);
 
-// Ruta raíz de cortesía
-app.get('/', (req, res) => {
-    res.send('Servidor modular de repuestos de motos funcionando.');
+// Ruta de prueba
+app.get('/api/test', (req, res) => {
+    res.send('La aplicación está funcionando correctamente conectada a Atlas');
 });
 
+// Arrancar el servidor
 app.listen(puerto, () => {
-    console.log(`Servidor corriendo con nodemon en el puerto ${puerto}`);
+    console.log(`Servidor corriendo en el puerto ${puerto}`);
 });
+
+// Exportamos la app para que Vercel la pueda leer
+module.exports = app;

@@ -1,13 +1,13 @@
 const mongoose = require('mongoose');
 
-const conectarBD = async () => {
+const dbconnect = async () => {
     try {
-        await mongoose.connect('mongodb://localhost:27017/dbPolo');
-        console.log('Conectado a la base de datos MongoDB local');
+        await mongoose.connect(process.env.MONGO_URI);
+        console.log('Conexión a la base de datos fue exitosa');
     } catch (error) {
-        console.error('Error al conectar a la base de datos:', error);
-        process.exit(1); // Detiene la app si no se puede conectar
+        console.error('Error en la conexión a la base de datos', error);
+        process.exit(1);
     }
 };
 
-module.exports = conectarBD;
+module.exports = dbconnect;
